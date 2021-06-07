@@ -21,8 +21,8 @@ from Generate_Kernel import Generate_Weights, Generate_Init
 
 HSI_CUT_SIZE = 11                                                               # Parameter initialization
 KERNEL_CUT_SIZE = 5
-TRAIN_RATE = [0.5,0.1,0.1,0.1,0.1,0.1,0.5,0.1,0.6,0.1,0.1,0.1,0.1,0.1,0.1,0.5]
-EPOCH = 50
+TRAIN_RATE = [0.55,0.035,0.056,0.12,0.07,0.05,0.5,0.064,0.5,0.05,0.023,0.058,0.145,0.041,0.078,0.5]
+EPOCH = 300
 BATCH_SIZE = 32
 KERNEL_BATCH_SIZE = 100
 LR = 0.005
