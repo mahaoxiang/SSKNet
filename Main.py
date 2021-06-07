@@ -21,11 +21,11 @@ from Generate_Kernel import Generate_Weights, Generate_Init
 
 HSI_CUT_SIZE = 11                                                               # Parameter initialization
 KERNEL_CUT_SIZE = 5
-TRAIN_RATE = [0.55,0.035,0.056,0.12,0.07,0.05,0.5,0.064,0.5,0.05,0.023,0.058,0.145,0.041,0.078,0.5]
+TRAIN_RATE = [0.55,0.035,0.056,0.125,0.074,0.05,0.5,0.064,0.5,0.05,0.024,0.058,0.145,0.041,0.078,0.5]
 EPOCH = 300
 BATCH_SIZE = 32
 KERNEL_BATCH_SIZE = 100
-LR = 0.005
+LR = 0.003
 BorderInter = cv2.BORDER_REFLECT_101
 Data_Hsi = scio.loadmat('Indian_pines_corrected.mat')                           # Load data
 Label_Hsi = scio.loadmat('Indian_pines_gt.mat')                                 # Load label
@@ -51,8 +51,8 @@ Data_PCA = array_2.reshape(Data.shape[0], Data.shape[1], array_2.shape[1])      
 cv2.imwrite('image_pca1.png', Data_PCA)
 img = io.imread('image_pca1.png')
 
-S_centers, S_clusters = Region_Segmentation.region_sege()                 # Homogenous region segmentation
-idx_hash_final = Region_Clustering.Clustering(img, S_centers, S_clusters)
+S_centers, S_clusters = Region_Segmentation.region_sege()                       # Homogenous region segmentation
+idx_hash_final = Region_Clustering.Clustering(img, S_centers, S_clusters)       # Rough region clustering
 hash_label = np.array(idx_hash_final[:, [4, 3, 5]], dtype='int64')
 # idx_keenel = np.lexsort(hash_label.T)
 # hash_label = hash_label[idx_keenel]
@@ -141,7 +141,7 @@ device = torch.device('cuda')
 model = SSKNet.SSKNet().to(device)
 criteon = nn.CrossEntropyLoss().to(device)
 optimizer = optim.Adam(model.parameters(), lr=LR, weight_decay=1e-5)
-schedulr = MultiStepLR(optimizer, milestones=[95], gamma=0.7)
+schedulr = MultiStepLR(optimizer, milestones=[60, 90, 120, 150, 180, 200, 220, 240], gamma=0.9)
 
 # Generate spatial kernels
 kernel_weight_2, Data_Border_feature = Generate_Weights(Data_Border, HSI_CUT_SIZE, KERNEL_CUT_SIZE, KERNEL_BATCH_SIZE,
